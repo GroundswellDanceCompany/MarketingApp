@@ -77,7 +77,20 @@ with tab4:
         st.info("No forecast data found yet.")
 
 with tab5:
-    st.header("Campaign Ideas")
+    import streamlit as st
+    import gspread
+    from oauth2client.service_account import ServiceAccountCredentials
+    from datetime import datetime
+
+    # Google Sheets connection
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    creds_dict = st.secrets["gcp_service_account"]
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+    client = gspread.authorize(creds)
+    campaign_sheet = client.open("Groundswell-Business").worksheet("idea_log")
+
+    st.subheader("Marketing Campaign Ideas")
+
     campaign_ideas = {
         "Meet the Dancer Series": "Weekly reels introducing students or teachers, using trending music.",
         "Bring a Friend Week": "Students invite friends to class for free. Promote via email and social.",
@@ -105,3 +118,12 @@ with tab5:
 
     else:
         st.info("Select one or more campaign ideas from the list to view details and add to your plan.")
+
+            if st.button("Add Selected to Campaign Plan"):
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+                for campaign in selected_campaigns:
+                    campaign_sheet.append_row([timestamp, campaign, campaign_ideas[campaign]])
+                st.success("Selected campaigns added to your plan!")
+
+        else:
+            st.info("Select one or more campaign ideas from the list to view details and add to your plan.")
