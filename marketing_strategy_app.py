@@ -114,7 +114,7 @@ with tab5:
             now = datetime.now().strftime("%Y-%m-%d %H:%M")
 
             for idea in selected_ideas:
-                ideas_log_sheet.append_row([now, idea])
+                idea_log_sheet.append_row([now, idea])
                 campaigns_sheet.append_row([
                     idea, "", "", "", "From Campaign Ideas", "", "Planned", ""
                 ])
