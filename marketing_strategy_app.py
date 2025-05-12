@@ -81,10 +81,16 @@ with tab5:
     st.subheader("Campaign Ideas")
 
     campaign_ideas = [
-        "Open Day Event",
-        "Bring a Friend Week",
-        "Student of the Month Spotlight",
-        "Social Media Challenge",
+        "Meet the Dancer Series": "Weekly reels introducing students or teachers, using trending music.",
+        "Bring a Friend Week": "Students invite friends to class for free. Promote via email and social.",
+        "Parent Testimonial Campaign": "Collect parent quotes or videos and share on Facebook and website.",
+        "Dancer of the Month Spotlight": "Recognize one student per month. Post bio and progress.",
+        "Countdown to Show Campaign": "Daily content leading to show day. Teasers, interviews, etc.",
+        "YouTube 'Learn a Step' Series": "Short tutorials on basic dance steps to attract new students.",
+        "Seasonal Mini Challenges": "Instagram/TikTok challenges with hashtags and community sharing.",
+        "Google Review Drive": "Encourage reviews with incentives. Share review links via email/WhatsApp.",
+        "Email Series: Why Dance?": "Automated emails about dance benefits to inform and attract.",
+        "Flyer Distribution at Local Events": "QR-coded flyers handed out locally. Link to your site or Instagram.",
         "Mini Video Series on Class Types",
         "Behind-the-Scenes Rehearsal Stories",
         "Parent Testimonial Campaign",
