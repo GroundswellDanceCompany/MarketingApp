@@ -15,10 +15,11 @@ campaigns_sheet = client.open("Groundswell-Business").worksheet("marketing_campa
 leads_sheet = client.open("Groundswell-Business").worksheet("leads")
 conversions_sheet = client.open("Groundswell-Business").worksheet("conversions")
 forecast_sheet = client.open("Groundswell-Business").worksheet("growth_forecast")
+campaign_ideas = client.open("Groundswell-Business").worksheet("idea_log")
 
 st.title("Marketing Strategy Dashboard")
 
-tab1, tab2, tab3, tab4 = st.tabs(["Campaign Tracker", "Lead Tracker", "Conversion Report", "Growth Forecast"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Campaign Tracker", "Lead Tracker", "Conversion Report", "Growth Forecast", "Campaign Ideas"])
 
 with tab1:
     st.header("Create & Track Campaigns")
@@ -74,3 +75,33 @@ with tab4:
         st.dataframe(forecast)
     else:
         st.info("No forecast data found yet.")
+
+with tab5:
+    st.header("Campaign Ideas")
+    campaign_ideas = {
+        "Meet the Dancer Series": "Weekly reels introducing students or teachers, using trending music.",
+        "Bring a Friend Week": "Students invite friends to class for free. Promote via email and social.",
+        "Parent Testimonial Campaign": "Collect parent quotes or videos and share on Facebook and website.",
+        "Dancer of the Month Spotlight": "Recognize one student per month. Post bio and progress.",
+        "Countdown to Show Campaign": "Daily content leading to show day. Teasers, interviews, etc.",
+        "YouTube 'Learn a Step' Series": "Short tutorials on basic dance steps to attract new students.",
+        "Seasonal Mini Challenges": "Instagram/TikTok challenges with hashtags and community sharing.",
+        "Google Review Drive": "Encourage reviews with incentives. Share review links via email/WhatsApp.",
+        "Email Series: Why Dance?": "Automated emails about dance benefits to inform and attract.",
+        "Flyer Distribution at Local Events": "QR-coded flyers handed out locally. Link to your site or Instagram."
+    }
+
+    selected_campaigns = st.multiselect("Select Campaign Ideas", options=list(campaign_ideas.keys()))
+
+    if selected_campaigns:
+        for campaign in selected_campaigns:
+            st.markdown(f"**{campaign}**: {campaign_ideas[campaign]}")
+
+        if st.button("Add Selected to Campaign Plan"):
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+            for campaign in selected_campaigns:
+                campaign_sheet.append_row([timestamp, campaign, campaign_ideas[campaign]])
+            st.success("Selected campaigns added to your plan!")
+
+    else:
+        st.info("Select one or more campaign ideas from the list to view details and add to your plan.")
