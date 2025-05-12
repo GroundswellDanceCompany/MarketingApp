@@ -119,11 +119,4 @@ with tab5:
     else:
         st.info("Select one or more campaign ideas from the list to view details and add to your plan.")
 
-            if st.button("Add Selected to Campaign Plan"):
-                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
-                for campaign in selected_campaigns:
-                    campaign_sheet.append_row([timestamp, campaign, campaign_ideas[campaign]])
-                st.success("Selected campaigns added to your plan!")
-
-        else:
-            st.info("Select one or more campaign ideas from the list to view details and add to your plan.")
+            
