@@ -77,53 +77,70 @@ with tab4:
         st.info("No forecast data found yet.")
 
 with tab5:
-    
     st.subheader("Campaign Ideas")
 
-    campaign_ideas = [
-        "Meet the Dancer Series - Weekly reels introducing students or teachers, using trending music.",
-        "Bring a Friend Week - Students invite friends to class for free. Promote via email and social.",
-        "Parent Testimonial Campaign - Collect parent quotes or videos and share on Facebook and website.",
-        "Dancer of the Month Spotlight - Recognize one student per month. Post bio and progress.",
-        "Countdown to Show Campaign - Daily content leading to show day. Teasers, interviews, etc.",
-        "YouTube 'Learn a Step' Series - Short tutorials on basic dance steps to attract new students.",
-        "Seasonal Mini Challenges - Instagram/TikTok challenges with hashtags and community sharing.",
-        "Google Review Drive - Encourage reviews with incentives. Share review links via email/WhatsApp.",
-        "Email Series: Why Dance? Automated emails about dance benefits to inform and attract.",
-        "Flyer Distribution at Local Events - QR-coded flyers handed out locally. Link to your site or Instagram.",
-        "Mini Video Series on Class Types",
-        "Behind-the-Scenes Rehearsal Stories",
-        "Early Bird Discount for New Term",
-        "Seasonal Performance Promo",
-        "Instagram Giveaway or Competition"
-    ]
+    campaign_ideas_dict = {
+        "Meet the Dancer Series": "Weekly reels introducing students or teachers, using trending music.",
+        "Countdown to Show Campaign": "Daily content leading to show day. Teasers, interviews, etc.",
+        "YouTube 'Learn a Step' Series": "Short tutorials on basic dance steps to attract new students.",
+        "Seasonal Mini Challenges": "Instagram/TikTok challenges with hashtags and community sharing.",
+        "Google Review Drive": "Encourage reviews with incentives. Share review links via email/WhatsApp.",
+        "Email Series: Why Dance?": "Automated emails about dance benefits to inform and attract.",
+        "Flyer Distribution at Local Events": "QR-coded flyers handed out locally. Link to your site or Instagram.",
+        "Open Day Event": "Host a free open day to showcase your classes and attract new students.",
+        "Bring a Friend Week": "Encourage current students to bring friends for a trial week.",
+        "Student of the Month Spotlight": "Feature outstanding students on social media and newsletters.",
+        "Social Media Challenge": "Run a fun dance challenge with a hashtag to boost engagement.",
+        "Mini Video Series on Class Types": "Create short videos introducing each class you offer.",
+        "Behind-the-Scenes Rehearsal Stories": "Share authentic moments from your rehearsals.",
+        "Parent Testimonial Campaign": "Collect and promote positive feedback from parents.",
+        "Early Bird Discount for New Term": "Offer early registration incentives for the upcoming term.",
+        "Seasonal Performance Promo": "Advertise shows with themed content during holidays.",
+        "Instagram Giveaway or Competition": "Launch a giveaway to grow your online audience."
+    }
 
-    st.write("Select the campaigns you'd like to explore or use:")
+    idea_names = list(campaign_ideas_dict.keys())
 
-    selected_ideas = st.multiselect("Select Campaign Ideas", campaign_ideas)
+    selected_ideas = st.multiselect("Select Campaign Ideas to Plan", idea_names)
 
-    if st.button("Add Selected Ideas to My Campaigns"):
-        if not selected_ideas:
-            st.warning("Please select at least one campaign idea.")
-        else:
-            # Google Sheets access
-            scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-            creds_dict = st.secrets["gcp_service_account"]
-            creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-            client = gspread.authorize(creds)
+    if selected_ideas:
+        for idea in selected_ideas:
+            st.markdown(f"**{idea}**: {campaign_ideas_dict[idea]}")
 
-            idea_log_sheet = client.open("Groundswell-Business").worksheet("idea_log")
-            marketing_campaigns_sheet = client.open("Groundswell-Business").worksheet("marketing_campaigns")
+        start_date = st.date_input("Planned Start Date")
+        end_date = st.date_input("Planned End Date")
 
-            from datetime import datetime
-            now = datetime.now().strftime("%Y-%m-%d %H:%M")
+        if st.button("Add Selected Campaign Ideas"):
+            if start_date > end_date:
+                st.warning("Start date cannot be after end date.")
+            else:
+                scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+                creds_dict = st.secrets["gcp_service_account"]
+                creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+                client = gspread.authorize(creds)
 
-            for idea in selected_ideas:
-                idea_log_sheet.append_row([now, idea])
-                campaigns_sheet.append_row([
-                    idea, "", "", "", "From Campaign Ideas", "", "Planned", ""
-                ])
+                ideas_log_sheet = client.open("Groundswell-Business").worksheet("campaign_ideas_log")
+                campaigns_sheet = client.open("Groundswell-Business").worksheet("campaigns")
 
-            st.success("Campaign ideas added successfully to your campaign tracker.")
+                from datetime import datetime
+                now = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+                for idea in selected_ideas:
+                    description = campaign_ideas_dict[idea]
+                    ideas_log_sheet.append_row([now, idea, description])
+                    campaigns_sheet.append_row([
+                        idea,
+                        start_date.strftime("%Y-%m-%d"),
+                        end_date.strftime("%Y-%m-%d"),
+                        "",  # Platform
+                        description,
+                        "",  # Metrics
+                        "Planned",
+                        ""   # Outcome
+                    ])
+
+                st.success("Ideas and descriptions added to campaign tracker.")
+
+
 
             
