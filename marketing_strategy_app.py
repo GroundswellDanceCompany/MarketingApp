@@ -119,8 +119,8 @@ with tab5:
                 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
                 client = gspread.authorize(creds)
 
-                ideas_log_sheet = client.open("Groundswell-Business").worksheet("campaign_ideas_log")
-                campaigns_sheet = client.open("Groundswell-Business").worksheet("campaigns")
+                idea_log_sheet = client.open("Groundswell-Business").worksheet("idea_log")
+                marketing_campaigns_sheet = client.open("Groundswell-Business").worksheet("marketing_campaigns")
 
                 from datetime import datetime
                 now = datetime.now().strftime("%Y-%m-%d %H:%M")
