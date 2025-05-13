@@ -127,8 +127,8 @@ with tab5:
 
                 for idea in selected_ideas:
                     description = campaign_ideas_dict[idea]
-                    ideas_log_sheet.append_row([now, idea, description])
-                    campaigns_sheet.append_row([
+                    idea_log_sheet.append_row([now, idea, description])
+                    marketing_campaigns_sheet.append_row([
                         idea,
                         start_date.strftime("%Y-%m-%d"),
                         end_date.strftime("%Y-%m-%d"),
